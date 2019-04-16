@@ -1,0 +1,24 @@
+{
+  "name": "uptask",
+  "version": "1.0.0",
+  "description": "Primer proyecto del curso de NODE.JS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon ./index.js"
+  },
+  "keywords": [
+    "Practice",
+    "Node",
+    "JS",
+    "Udemy"
+  ],
+  "author": "The Gray Zone Sentinel",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.11"
+  }
+}
