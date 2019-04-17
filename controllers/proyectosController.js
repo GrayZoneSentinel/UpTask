@@ -43,7 +43,10 @@ exports.nuevoProyecto = async (req, res) => {
         // Retrieve the Slug
         // console.log(slug(nombre));
         const url = slug(nombre).toLowerCase();
-        const proyecto = await Proyectos.create({ nombre, url });
+        // Introducción de Hooks para el URL del proyecto
+        
+        // const proyecto = await Proyectos.create({ nombre, url });
+        const proyecto = await Proyectos.create({ nombre });
         res.redirect('/');
     }
 }
