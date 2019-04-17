@@ -3,9 +3,11 @@ const express = require('express');
 const routes = require('./routes');
 // Conexión a la base de datos
 const db = require('./config/db');
-db.authenticate()
-                .then(()=>console.log('Conectado a la base de datos correctamente'))
-                .catch(error => console.log(error));
+                    // db.authenticate().then(()=>console.log('Conectado a la base de datos correctamente')).catch(error => console.log(error));
+require('./models/Proyectos');
+db.sync()
+        .then(()=>console.log('Conectado a la base de datos correctamente'))
+        .catch(error => console.log(error));
 // Configurar PUG
 const path = require('path');
 // BodyParser

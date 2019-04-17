@@ -5,7 +5,7 @@ const db = require('../config/db');
 const Proyectos = db.define('proyectos', {
     id:{
         type: Sequelize.INTEGER,
-        primeryKey: true,
+        primaryKey: true,
         autoIncrement: true
     },
     nombre: Sequelize.STRING,
