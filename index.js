@@ -6,7 +6,7 @@ const db = require('./config/db');
                     // db.authenticate().then(()=>console.log('Conectado a la base de datos correctamente')).catch(error => console.log(error));
 require('./models/Proyectos');
 db.sync()
-        .then(()=>console.log('Conectado a la base de datos correctamente'))
+        .then(()=>console.log('Data Base connection: status OK'))
         .catch(error => console.log(error));
 // Configurar PUG
 const path = require('path');

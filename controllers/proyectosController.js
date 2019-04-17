@@ -1,3 +1,6 @@
+// Importar el modelo de Proyectos
+const Proyectos = require('../models/Proyectos');
+
 exports.proyectosHome = (req, res) => {
     res.render('index', {
         nombrePagina: 'UPTASK - Proyectos'
@@ -10,7 +13,8 @@ exports.formularioProyecto = (req, res) => {
     });
 }
 
-exports.nuevoProyecto = (req, res) => {
+// exports.nuevoProyecto = (req, res) => {
+exports.nuevoProyecto = async (req, res) => {
     // res.send('Proyecto registrado correctamente')
     // Recuperar lo que el usuario escribe en el textfield
     console.log(req.body)
@@ -30,6 +34,11 @@ exports.nuevoProyecto = (req, res) => {
     } else {
         // No hay error
         // Insertar nombre del proyecto en la BD
-        
+        // Proyectos
+        //     .create({ nombre });
+            // .then( () => console.log('Project successfully created and inserted in the DB') )
+            // .catch( error => console.log(error) );
+        const proyecto = await Proyectos.create({ nombre });
+        res.redirect('/');
     }
 }
