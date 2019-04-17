@@ -3,7 +3,8 @@ const express = require('express');
 const routes = require('./routes');
 // Configurar PUG
 const path = require('path');
-
+// BodyParser
+const bodyParser = require('body-parser')
 // Crear aplicación de EXPRESS
 const app = express();
 // Habilitar PUG
@@ -12,6 +13,8 @@ app.set('view engine', 'pug');
 app.use(express.static('public'));
 //Añadir la carpeta de las vistas
 app.set('views', path.join(__dirname, './views'));
+// Habilitar bodyparser para ver lo que se escribe en el textfields
+app.use(bodyParser.urlencoded({extended:true}));
 // Configurar ruta acceso index
 app.use('/', routes());
 // Configurar puerto
