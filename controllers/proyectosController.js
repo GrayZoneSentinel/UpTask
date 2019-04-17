@@ -26,37 +26,21 @@ exports.formularioProyecto = async (req, res) => {
 
 exports.nuevoProyecto = async (req, res) => {
     const proyectos = await Proyectos.findAll();
-
-    // res.send('Proyecto registrado correctamente')
-    // Recuperar lo que el usuario escribe en el textfield
-    console.log(req.body)
-    // Validar que hay datos en el input
     const { nombre } = req.body;
     let errores = [];
 
     if(!nombre) {
         errores.push({'texto': 'Elige el nombre del proyecto'})
     }
-    // Si hay errores
+
     if(errores.length > 0){
         res.render('nuevo-proyecto', {
             nombrePagina: 'Nuevo proyecto',
             errores,
             proyectos
         })
-    } else {
-        // No hay error
-        // Insertar nombre del proyecto en la BD
-        // Proyectos
-        //     .create({ nombre });
-            // .then( () => console.log('Project successfully created and inserted in the DB') )
-            // .catch( error => console.log(error) );
-        // Retrieve the Slug
-        // console.log(slug(nombre));
+    } else {   
         const url = slug(nombre).toLowerCase();
-        // Introducción de Hooks para el URL del proyecto
-        
-        // const proyecto = await Proyectos.create({ nombre, url });
         const proyecto = await Proyectos.create({ nombre });
         res.redirect('/');
     }
@@ -83,7 +67,7 @@ exports.proyectoPorUrl = async (req, res, next) => {
     })
 }
 
-exports.formularioEditar = async (req, res, next) => {
+exports.formularioEditar = async (req, res) => {
     const proyectosPromise = Proyectos.findAll();
     const proyectoPromise = Proyectos.findOne({
         where: {
@@ -91,10 +75,33 @@ exports.formularioEditar = async (req, res, next) => {
         }
     });
     const [proyectos, proyecto] = await Promise.all([proyectosPromise, proyectoPromise]);
-    if(!proyecto) return next();
     res.render('nuevo-proyecto', {
         nombrePagina: 'Editar proyecto',
         proyecto,
         proyectos
     })
+}
+
+exports.actualizarProyecto = async (req, res) => {
+    const proyectos = await Proyectos.findAll();
+    const { nombre } = req.body;
+    let errores = [];
+
+    if(!nombre) {
+        errores.push({'texto': 'Elige el nombre del proyecto'})
+    }
+
+    if(errores.length > 0){
+        res.render('nuevo-proyecto', {
+            nombrePagina: 'Nuevo proyecto',
+            errores,
+            proyectos
+        })
+    } else {   
+        await Proyectos.update(
+            { nombre: nombre },
+            { where: { id: req.params.id }}
+        );
+        res.redirect('/');
+    }
 }

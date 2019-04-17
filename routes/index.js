@@ -16,7 +16,10 @@ module.exports = function() {
     // Listar proyectos
     router.get('/proyectos/:url', proyectosController.proyectoPorUrl);
     // Actualizar proyecto
-    router.get('proyectos/editar/:id', proyectosController.formularioEditar);
+    router.get('/proyectos/editar/:id', proyectosController.formularioEditar);
+    router.post('/nuevo-proyecto/:id',
+        body('nombre').not().isEmpty().trim().escape(),
+        proyectosController.actualizarProyecto);
 
 
     return router;
