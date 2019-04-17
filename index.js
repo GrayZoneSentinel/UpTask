@@ -1,6 +1,11 @@
 const express = require('express');
 // Importar el archivo de las rutas
 const routes = require('./routes');
+// Conexión a la base de datos
+const db = require('./config/db');
+db.authenticate()
+                .then(()=>console.log('Conectado a la base de datos correctamente'))
+                .catch(error => console.log(error));
 // Configurar PUG
 const path = require('path');
 // BodyParser
