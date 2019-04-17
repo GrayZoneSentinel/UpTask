@@ -3,6 +3,9 @@ const Proyectos = require('../models/Proyectos');
 // Importar Slug to retrieve the Project's URL
 const slug = require('slug');
 
+//================================================
+//         FUNCIONES DE LOS PROYECTOS
+//================================================
 exports.proyectosHome = async (req, res) => {
     // Get los distintos proyectos
     const proyectos = await Proyectos.findAll();
@@ -21,7 +24,6 @@ exports.formularioProyecto = async (req, res) => {
     });
 }
 
-// exports.nuevoProyecto = (req, res) => {
 exports.nuevoProyecto = async (req, res) => {
     const proyectos = await Proyectos.findAll();
 
@@ -63,19 +65,35 @@ exports.nuevoProyecto = async (req, res) => {
 // Proyectos por URL: listar proyectos en la sidebar izq
 exports.proyectoPorUrl = async (req, res, next) => {
     // res.send('Listo');
-    const proyectos = await Proyectos.findAll();
-
-    const proyecto = await Proyectos.findOne({
+    const proyectosPromise = Proyectos.findAll();
+    const proyectoPromise = Proyectos.findOne({
         where: {
             url: req.params.url
         }
     });
+    const [proyectos, proyecto] = await Promise.all([proyectosPromise, proyectoPromise]);
     if(!proyecto) return next();
     // Render a la vista
         // console.log(proyecto);
         // res.send('Proyecto sended OK');
     res.render('tareas', {
         nombrePagina: 'Tareas del proyecto',
+        proyecto,
+        proyectos
+    })
+}
+
+exports.formularioEditar = async (req, res, next) => {
+    const proyectosPromise = Proyectos.findAll();
+    const proyectoPromise = Proyectos.findOne({
+        where: {
+            id: req.params.id
+        }
+    });
+    const [proyectos, proyecto] = await Promise.all([proyectosPromise, proyectoPromise]);
+    if(!proyecto) return next();
+    res.render('nuevo-proyecto', {
+        nombrePagina: 'Editar proyecto',
         proyecto,
         proyectos
     })

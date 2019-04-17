@@ -4,3 +4,15 @@ block contenido
     .contenido-principal
         h1 #{proyecto.nombre}
         h2 #{nombrePagina}
+
+        //- Formulario
+
+        //- Listado de pendientes
+        //- pre= vardump(proyecto)
+
+
+        //- Acciones 
+        
+        .contenedor-acciones
+            a(href=`/proyectos/editar/${proyecto.id}` class="boton") Editar
+            button#eliminar-proyecto(type="button" class= "boton eliminar" href="#") Eliminar
