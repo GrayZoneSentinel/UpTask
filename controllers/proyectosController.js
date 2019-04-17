@@ -1,5 +1,7 @@
 // Importar el modelo de Proyectos
 const Proyectos = require('../models/Proyectos');
+// Importar Slug to retrieve the Project's URL
+const slug = require('slug');
 
 exports.proyectosHome = (req, res) => {
     res.render('index', {
@@ -38,7 +40,10 @@ exports.nuevoProyecto = async (req, res) => {
         //     .create({ nombre });
             // .then( () => console.log('Project successfully created and inserted in the DB') )
             // .catch( error => console.log(error) );
-        const proyecto = await Proyectos.create({ nombre });
+        // Retrieve the Slug
+        // console.log(slug(nombre));
+        const url = slug(nombre).toLowerCase();
+        const proyecto = await Proyectos.create({ nombre, url });
         res.redirect('/');
     }
 }
