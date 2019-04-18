@@ -10,7 +10,7 @@ exports.proyectosHome = async (req, res) => {
     // Get los distintos proyectos
     const proyectos = await Proyectos.findAll();
     res.render('index', {
-        nombrePagina: 'UPTASK - Proyectos ' + res.locals.year,
+        nombrePagina: 'Proyectos ' + res.locals.year,
         proyectos
     });
 }
@@ -19,7 +19,7 @@ exports.formularioProyecto = async (req, res) => {
     const proyectos = await Proyectos.findAll();
 
     res.render('nuevo-proyecto', {
-        nombrePagina: 'UPTASK - Crear proyecto',
+        nombrePagina: 'Crear proyecto',
         proyectos
     });
 }

@@ -6,13 +6,16 @@ block contenido
         h2 #{nombrePagina}
 
         //- Formulario
-
+        form.agregar-tarea(action=`/proyectos/${proyecto.url}` method="POST")
+            .campo
+                label(for="tarea") Tarea:
+                input.nombre-tarea(type="text" name="tarea" placeholder="Nombre de la tarea")
+            .campo.enviar
+                input.boton.nueva-tarea(type="submit" value="Crear tarea")
         //- Listado de pendientes
-        //- pre= vardump(proyecto)
 
-
+                //- pre= vardump(proyecto)
         //- Acciones 
-        
         .contenedor-acciones
             a(href=`/proyectos/editar/${proyecto.id}` class="boton") Editar
             button#eliminar-proyecto(data-proyecto-url=proyecto.url type="button" class= "boton eliminar") Eliminar
