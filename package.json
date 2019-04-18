@@ -18,6 +18,7 @@
   "author": "The Gray Zone Sentinel",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.18.0",
     "concurrently": "^4.1.0",
     "express": "^4.16.4",
     "express-validator": "^5.3.1",
@@ -26,6 +27,7 @@
     "sequelize": "^5.6.1",
     "shortid": "^2.2.14",
     "slug": "^1.1.0",
+    "sweetalert2": "^8.8.5",
     "validator": "^10.11.0"
   },
   "devDependencies": {
