@@ -1,5 +1,6 @@
 import axios from "axios";
 import Swal from 'sweetalert2';
+import { actualizarAvance } from '../funciones/avance';
 
 const tareas = document.querySelector('.listado-pendientes');
 if(tareas){
@@ -17,6 +18,8 @@ if(tareas){
                 // console.log(respuesta);
                 if(respuesta.status === 200){
                     icono.classList.toggle('completo');
+                    // Llamar a la función de actualización del progreso
+                    actualizarAvance();
                 }
             });
         };
@@ -48,6 +51,8 @@ if(tareas){
                                 respuesta.data,
                                 'success'
                             )
+                            // Llamar a la función de actualización del progreso
+                            actualizarAvance();
                         }
                     })
                 }
