@@ -26,6 +26,7 @@ module.exports = function() {
     router.delete('/proyectos/:url', proyectosController.eliminarProyecto);
     // ====== TAREAS =======
     router.post('/proyectos/:url', tareasController.agregarTarea);
+    router.patch('/tareas/:id', tareasController.cambiarEstadoTarea);
 
     return router;
 }

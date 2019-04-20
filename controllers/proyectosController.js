@@ -2,6 +2,8 @@
 const Proyectos = require('../models/Proyectos');
 // Importar Slug to retrieve the Project's URL
 const slug = require('slug');
+// Modelo Tareas
+const Tareas = require('../models/Tareas');
 
 //================================================
 //         FUNCIONES DE LOS PROYECTOS
@@ -56,6 +58,16 @@ exports.proyectoPorUrl = async (req, res, next) => {
         }
     });
     const [proyectos, proyecto] = await Promise.all([proyectosPromise, proyectoPromise]);
+    // Consulta de las Tareas pertenecientes al Proyecto
+    const tareas = await Tareas.findAll({
+        where: {
+            proyectoId: proyecto.id
+        },
+        // include: [
+        //     { model: Proyectos }
+        // ]
+    })
+
     if(!proyecto) return next();
     // Render a la vista
         // console.log(proyecto);
@@ -63,7 +75,8 @@ exports.proyectoPorUrl = async (req, res, next) => {
     res.render('tareas', {
         nombrePagina: 'Tareas del proyecto',
         proyecto,
-        proyectos
+        proyectos,
+        tareas
     })
 }
 

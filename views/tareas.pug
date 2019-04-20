@@ -3,7 +3,7 @@ extends layout
 block contenido
     .contenido-principal
         h1 #{proyecto.nombre}
-        h2 #{nombrePagina}
+        h2 Añadir tarea
 
         //- Formulario
         form.agregar-tarea(action=`/proyectos/${proyecto.url}` method="POST")
@@ -13,8 +13,23 @@ block contenido
             .campo.enviar
                 input.boton.nueva-tarea(type="submit" value="Crear tarea")
         //- Listado de pendientes
-
-                //- pre= vardump(proyecto)
+        //- pre= vardump(tareas)    
+        if tareas.length
+            h2 #{nombrePagina}     
+            .listado-pendientes 
+                ul
+                    each tarea in tareas
+                        li.tarea(data-tarea= tarea.id)
+                            p= tarea.tarea 
+                            .acciones
+                                if tarea.estado
+                                    i.far.fa-check-circle.completo
+                                else 
+                                    i.far.fa-check-circle
+                                i.fas.fa-trash
+        else
+            h2 No hay tareas asignadas al Proyecto
+        //- pre= vardump(proyecto)
         //- Acciones 
         .contenedor-acciones
             a(href=`/proyectos/editar/${proyecto.id}` class="boton") Editar
