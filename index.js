@@ -7,6 +7,8 @@ const helpers = require('./helpers');
 const db = require('./config/db');
                     // db.authenticate().then(()=>console.log('Conectado a la base de datos correctamente')).catch(error => console.log(error));
 require('./models/Proyectos');
+require('./models/Tareas');
+require('./models/Usuarios');
 db.sync()
         .then(()=>console.log('Data Base connection: status OK'))
         .catch(error => console.log(error));
