@@ -1,12 +1,18 @@
 // Initial config
 const express = require('express');
 const router = express.Router();
+
 // Import express validator
 const { body } = require('express-validator/check');
+
 // Imports main controllers
 const proyectosController = require('../controllers/proyectosController');
 const tareasController = require('../controllers/tareasController');
+const usuariosController = require('../controllers/usuariosController');
+
+
 module.exports = function() {
+
     // ====== PROYECTOS =======
     // Ruta para el Home
     router.get('/', proyectosController.proyectosHome);
@@ -24,10 +30,17 @@ module.exports = function() {
         proyectosController.actualizarProyecto);
     // Eliminar proyecto
     router.delete('/proyectos/:url', proyectosController.eliminarProyecto);
+    
     // ====== TAREAS =======
     router.post('/proyectos/:url', tareasController.agregarTarea);
     router.patch('/tareas/:id', tareasController.cambiarEstadoTarea);
     router.delete('/tareas/:id', tareasController.eliminarTarea);
 
+    // ====== USUARIOS =======
+    // Creación de una nueva cuenta de usuario
+    router.get('/crear-cuenta', usuariosController.formCrearNuevaCuenta);
+    router.post('/crear-cuenta', usuariosController.crearCuenta);
+    
+    
     return router;
 }
