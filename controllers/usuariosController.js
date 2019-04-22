@@ -8,6 +8,11 @@ exports.formCrearNuevaCuenta = (req, res) => {
         nombrePagina: 'Crear nueva cuenta UpTask'
     });
 }
+exports.formIniciarSesion = (req, res) => {
+    res.render('iniciarSesion', {
+        nombrePagina: 'Iniciar sesión en mi cuenta UpTask'
+    });
+}
 exports.crearCuenta = async (req, res) => {
     // res.send('Formulario enviado correctamente.');
     // Leer datos

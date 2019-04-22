@@ -40,6 +40,7 @@ module.exports = function() {
     // Creación de una nueva cuenta de usuario
     router.get('/crear-cuenta', usuariosController.formCrearNuevaCuenta);
     router.post('/crear-cuenta', usuariosController.crearCuenta);
+    router.get('/iniciar-sesion', usuariosController.formIniciarSesion);
     
     
     return router;
