@@ -50,13 +50,15 @@ app.use(session({
 // Configuración de Passport
 app.use(passport.initialize());
 app.use(passport.session());
+// APRENDIENDO MIDDLEWARE
 // Pasar var dump a la aplicación
 app.use((req, res, next)=>{
         res.locals.vardump = helpers.vardump;
         res.locals.mensajes = req.flash();
+        res.locals.usuario = { ...req.user} || null;
         next();
 });
-// APRENDIENDO MIDDLEWARE
+
 app.use((req, res, next) =>{
     const fecha = new Date();
     res.locals.year = fecha.getFullYear();

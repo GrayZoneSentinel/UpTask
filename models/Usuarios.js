@@ -50,6 +50,6 @@ Usuarios.prototype.verificarPassword = function(password) {
 }
 
 // Relation with Projects
-// Usuarios.hasMany(Proyectos);
+Usuarios.hasMany(Proyectos);
 
 module.exports = Usuarios;

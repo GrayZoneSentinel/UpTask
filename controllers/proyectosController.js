@@ -9,6 +9,8 @@ const Tareas = require('../models/Tareas');
 //         FUNCIONES DE LOS PROYECTOS
 //================================================
 exports.proyectosHome = async (req, res) => {
+    // Auth user check
+    console.log(res.locals.usuario);
     // Get los distintos proyectos
     const proyectos = await Proyectos.findAll();
     res.render('index', {
@@ -41,9 +43,11 @@ exports.nuevoProyecto = async (req, res) => {
             errores,
             proyectos
         })
-    } else {   
+    } else {
+        // Búsqueda del ID del usuario para asignar el proyecto al usuario correspondiente
+        const usuarioId = res.locals.usuario.id;  
         const url = slug(nombre).toLowerCase();
-        const proyecto = await Proyectos.create({ nombre });
+        const proyecto = await Proyectos.create({ nombre, usuarioId });
         res.redirect('/');
     }
 }
