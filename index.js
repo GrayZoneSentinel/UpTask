@@ -1,42 +1,63 @@
 const express = require('express');
 // Importar el archivo de las rutas
 const routes = require('./routes');
+// Configurar PUG
+const path = require('path');
+// BodyParser
+const bodyParser = require('body-parser');
+// Habilitar Validator en toda la aplicación
+const expressValidator = require('express-validator');
+// Connect Flash
+const flash = require('connect-flash');
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
 // Importar Helpers file
 const helpers = require('./helpers');
 // Conexión a la base de datos
 const db = require('./config/db');
-                    // db.authenticate().then(()=>console.log('Conectado a la base de datos correctamente')).catch(error => console.log(error));
+// Importar el modelo
 require('./models/Proyectos');
 require('./models/Tareas');
 require('./models/Usuarios');
 db.sync()
         .then(()=>console.log('Data Base connection: status OK'))
         .catch(error => console.log(error));
-// Configurar PUG
-const path = require('path');
-// BodyParser
-const bodyParser = require('body-parser')
 // Crear aplicación de EXPRESS
 const app = express();
-// Habilitar PUG
-app.set('view engine', 'pug');
 // Carga de los archivos estáticos
 app.use(express.static('public'));
+// Habilitar PUG
+app.set('view engine', 'pug');
+// Habilitar bodyparser para ver lo que se escribe en el textfields
+app.use(bodyParser.urlencoded({extended:true}));
+// Validator para toda la aplicación
+app.use(expressValidator());
 //Añadir la carpeta de las vistas
 app.set('views', path.join(__dirname, './views'));
+// Habilitar Flash messages
+app.use(flash());
+// Cookie Parser necesario para la funcionalidad de Session
+app.use(cookieParser());
+// Navegación entre distintas páginas sin requerir nueva autenticación
+app.use(session({
+        secret: 'supersecreto',
+        resave: false,
+        saveUninitialized: false
+        }
+))
 // Pasar var dump a la aplicación
 app.use((req, res, next)=>{
         res.locals.vardump = helpers.vardump;
+        res.locals.mensajes = req.flash();
         next();
-})
+});
 // APRENDIENDO MIDDLEWARE
 app.use((req, res, next) =>{
     const fecha = new Date();
     res.locals.year = fecha.getFullYear();
     next();  
 })
-// Habilitar bodyparser para ver lo que se escribe en el textfields
-app.use(bodyParser.urlencoded({extended:true}));
+
 // Configurar ruta acceso index
 app.use('/', routes());
 // Configurar puerto

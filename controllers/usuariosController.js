@@ -1,4 +1,5 @@
 const Usuarios = require('../models/Usuarios');
+// const flash = require('connect-flash');
 //================================================
 //         FUNCIONES DE USUARIOS
 //================================================
@@ -7,20 +8,27 @@ exports.formCrearNuevaCuenta = (req, res) => {
         nombrePagina: 'Crear nueva cuenta UpTask'
     });
 }
-exports.crearCuenta = (req, res) => {
+exports.crearCuenta = async (req, res) => {
     // res.send('Formulario enviado correctamente.');
     // Leer datos
         // console.log(req.body);
         const { email, password } = req.body;
-        // Crear usuario
-        Usuarios.create({
-            email,
-            password
-        })
-        .then(()=>{
+        try{
+            // Crear usuario
+            await Usuarios.create({
+                email,
+                password
+            });  
             res.redirect('/iniciar-sesion');
-        })
-        // res.render('crearCuenta', {
-        //     nombrePagina: 'Crear nueva cuenta'
-        // })
+        } catch (error) {
+            // console.log(error);
+            req.flash('error', error.errors.map(error => error.message));
+            res.render('crearCuenta', {
+                // errores: error.errors,
+                mensajes: req.flash(),  
+                nombrePagina: 'Crear nueva cuenta UpTask',
+                email: email,
+                password: password
+            })
+        }
 }

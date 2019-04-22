@@ -1,6 +1,7 @@
 const Sequelize = require('sequelize');
 const db = require('../config/db');
-const Proyectos = require('./Proyectos');
+const Proyectos = require('../models/Proyectos');
+const bcrypt = require('bcrypt-nodejs');
 
 const Usuarios = db.define('usuarios', {
     id: {
@@ -8,18 +9,38 @@ const Usuarios = db.define('usuarios', {
         primaryKey: true,
         autoIncrement: true
     },
-    // nombre: Sequelize.STRING(100),
-    // apellidos: Sequelize.STRING(100),
     email: {
         type: Sequelize.STRING(120),
-        allowNull: false
+        allowNull: false,
+        validate: {
+            isEmail: {
+                msg: 'Agrega un correo válido'
+            },
+            notEmpty: {
+                msg: 'Dirección de correo requerida'
+            }
+        },
+        unique: {
+            args: true,
+            msg: 'El email introducido ya figura registrado'
+        }
     },
     password: {
-        type: Sequelize.STRING(200),
-        allowNull: false
-    },
-
-});
+        type: Sequelize.STRING(80),
+        allowNull: false,
+        validate: {
+            notEmpty: {
+                msg: 'Password requerido'
+            }
+        }
+    }
+}, {
+    hooks: {
+        beforeCreate(usuario){
+            usuario.password = bcrypt.hashSync(usuario.password, bcrypt.genSaltSync(10));
+        }   
+    }
+})
 // Relation with Projects
 Usuarios.hasMany(Proyectos);
 
