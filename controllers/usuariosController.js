@@ -9,8 +9,10 @@ exports.formCrearNuevaCuenta = (req, res) => {
     });
 }
 exports.formIniciarSesion = (req, res) => {
+    const { error } = res.locals.mensajes;
     res.render('iniciarSesion', {
-        nombrePagina: 'Iniciar sesión en mi cuenta UpTask'
+        nombrePagina: 'Iniciar sesión en mi cuenta UpTask',
+        error: error
     });
 }
 exports.crearCuenta = async (req, res) => {

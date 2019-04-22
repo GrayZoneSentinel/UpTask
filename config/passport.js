@@ -14,7 +14,7 @@ passport.use(
         },
         async (email, password, done) => {
             try{
-                const usuario = await Usuarios.find(
+                const usuario = await Usuarios.findOne(
                     { where: 
                         {email: email}
                     }
@@ -30,7 +30,7 @@ passport.use(
             } catch (error) {
                 // Error: el usuario no existe
                 return done(null, false, {
-                    message: 'Ninguna cuenta UpTask se corresponde con el usuario.'
+                    message: 'Ninguna cuenta UpTask corresponde a ese usuario'
                 })
             }
         }
