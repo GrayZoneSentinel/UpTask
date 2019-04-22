@@ -15,26 +15,28 @@ module.exports = function() {
 
     // ====== PROYECTOS =======
     // Ruta para el Home
-    router.get('/', proyectosController.proyectosHome);
-    router.get('/nuevo-proyecto', proyectosController.formularioProyecto);
+    router.get('/', authController.usuarioAutenticado, proyectosController.proyectosHome);
+    router.get('/nuevo-proyecto', authController.usuarioAutenticado, proyectosController.formularioProyecto);
     router.post('/nuevo-proyecto',
+        authController.usuarioAutenticado, 
         body('nombre').not().isEmpty().trim().escape(),
         proyectosController.nuevoProyecto
     );
     // Listar proyectos
-    router.get('/proyectos/:url', proyectosController.proyectoPorUrl);
+    router.get('/proyectos/:url', authController.usuarioAutenticado, proyectosController.proyectoPorUrl);
     // Actualizar proyecto
-    router.get('/proyectos/editar/:id', proyectosController.formularioEditar);
+    router.get('/proyectos/editar/:id', authController.usuarioAutenticado, proyectosController.formularioEditar);
     router.post('/nuevo-proyecto/:id',
+        authController.usuarioAutenticado, 
         body('nombre').not().isEmpty().trim().escape(),
         proyectosController.actualizarProyecto);
     // Eliminar proyecto
-    router.delete('/proyectos/:url', proyectosController.eliminarProyecto);
+    router.delete('/proyectos/:url', authController.usuarioAutenticado, proyectosController.eliminarProyecto);
     
     // ====== TAREAS =======
-    router.post('/proyectos/:url', tareasController.agregarTarea);
-    router.patch('/tareas/:id', tareasController.cambiarEstadoTarea);
-    router.delete('/tareas/:id', tareasController.eliminarTarea);
+    router.post('/proyectos/:url', authController.usuarioAutenticado, tareasController.agregarTarea);
+    router.patch('/tareas/:id', authController.usuarioAutenticado, tareasController.cambiarEstadoTarea);
+    router.delete('/tareas/:id', authController.usuarioAutenticado, tareasController.eliminarTarea);
 
     // ====== USUARIOS =======
     // Creación de una nueva cuenta de usuario
@@ -43,6 +45,8 @@ module.exports = function() {
     router.get('/iniciar-sesion', usuariosController.formIniciarSesion);
     // Autenticación usuarios
     router.post('/iniciar-sesion', authController.autenticarUsuario);
+    // Cerrar sesion
+    router.get('/cerrar-sesion', authController.cerrarSesion);
     
     
     return router;
