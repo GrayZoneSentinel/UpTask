@@ -11,6 +11,8 @@ const expressValidator = require('express-validator');
 const flash = require('connect-flash');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
+// Passport: autenticación usuarios
+const passport = require('./config/passport');
 // Importar Helpers file
 const helpers = require('./helpers');
 // Conexión a la base de datos
@@ -44,7 +46,10 @@ app.use(session({
         resave: false,
         saveUninitialized: false
         }
-))
+));
+// Configuración de Passport
+app.use(passport.initialize());
+app.use(passport.session());
 // Pasar var dump a la aplicación
 app.use((req, res, next)=>{
         res.locals.vardump = helpers.vardump;

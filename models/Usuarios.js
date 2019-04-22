@@ -41,6 +41,14 @@ const Usuarios = db.define('usuarios', {
         }   
     }
 })
+//============================
+//   MÉTODOS PERSONALIZADOS
+//============================
+// Validación de acceso: usuario registrado (function: verificarPassword() localizada en passport.js)
+Usuarios.prototype.verificarPassword = function(password) {
+    return bcrypt.compareSync(password, this.password);
+}
+
 // Relation with Projects
 Usuarios.hasMany(Proyectos);
 
