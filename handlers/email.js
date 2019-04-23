@@ -21,18 +21,38 @@ let transport = nodemailer.createTransport({
 });
 
 // Generar HTML
-const generarHTML = () => {
-    const html = pug.renderFile(`${__dirname}/../views/emails/restablecer-password.pug`);
+const generarHTML = (archivo, opciones = {}) => {
+    // const html = pug.renderFile(`${__dirname}/../views/emails/restablecer-password.pug`);
+    const html = pug.renderFile(`${__dirname}/../views/emails/${archivo}.pug`, opciones);
     return juice(html);
 }
 
 // send mail with defined transport object
-let mailOptions = {
-    from: '"UpTask Services" <no-reply@uptask.com>', // sender address
-    to: "uptask@uptask.com", // list of receivers
-    subject: "UPTASK Recover password", // Subject line
-    text: "New password", // plain text body
-    html: generarHTML() // html body
-};
+exports.enviar = async (opciones) => {
+    const html = generarHTML(opciones.archivo, opciones);
+    const text = htmlToText.fromString(html);
+    let opcionesEmail = {
+        from: '"UpTask Services" <no-reply@uptask.com>', 
+        // to: "uptask@uptask.com",
+        to: opciones.usuario.email,
+        // subject: "UPTASK Recover password",
+        subject: opciones.subject,
+        // text: "New password",
+        text,
+        // html: generarHTML()
+        html
+    };
+    // Se emplea util porque sirve para aquellas cuestiones que no soportan Async - Await
+    const enviarMail = util.promisify(transport.sendMail, transport);
+    return enviarMail.call(transport, opcionesEmail);
+    // transport.sendMail(mailOptions);
+}
+// let mailOptions = {
+//     from: '"UpTask Services" <no-reply@uptask.com>', // sender address
+//     to: "uptask@uptask.com", // list of receivers
+//     subject: "UPTASK Recover password", // Subject line
+//     text: "New password", // plain text body
+//     html: generarHTML() // html body
+// };
 
-transport.sendMail(mailOptions);
+// transport.sendMail(mailOptions);

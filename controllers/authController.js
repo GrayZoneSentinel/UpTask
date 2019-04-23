@@ -4,6 +4,8 @@ const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 const crypto = require('crypto');
 const bcrypt = require('bcrypt-nodejs');
+// Configuración mailing
+const enviarMail = require('../handlers/email');
 //================================================
 //         FUNCIONES DE LOS PROYECTOS
 //================================================
@@ -56,6 +58,16 @@ exports.enviarToken = async (req, res) => {
         // URL de reset
     const resetURL = `http://${req.headers.host}/restablecer/${usuario.token}`;
         // console.log(resetURL);
+        // Enviar el correo al usuario con el token para restablecer clave de acceso
+        await enviarMail.enviar({
+            usuario,
+            subject: 'Restablecer clave de acceso',
+            resetURL,
+            archivo: 'restablecer-password'
+        });
+        // Redireccionar
+        req.flash('correcto', 'En unos instantes recibirás un correo con el enlace que te permita cambiar tu clave UpTask');
+        res.redirect('/iniciar-sesion');
 }
 exports.validarToken = async (req, res) => {
     // res.json(req.params.token);
