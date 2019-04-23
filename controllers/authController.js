@@ -1,6 +1,9 @@
 const passport = require('passport');
 const Usuarios = require('../models/Usuarios');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 const crypto = require('crypto');
+const bcrypt = require('bcrypt-nodejs');
 //================================================
 //         FUNCIONES DE LOS PROYECTOS
 //================================================
@@ -54,7 +57,7 @@ exports.enviarToken = async (req, res) => {
     const resetURL = `http://${req.headers.host}/restablecer/${usuario.token}`;
         // console.log(resetURL);
 }
-exports.resetPassword = async (req, res) => {
+exports.validarToken = async (req, res) => {
     // res.json(req.params.token);
     const usuario = await Usuarios.findOne({where: {token: req.params.token}});
     // Usuario no encontrado
@@ -66,4 +69,32 @@ exports.resetPassword = async (req, res) => {
     res.render('resetPassword', {
         nombrePagina: 'Restablecer clave de acceso'
     })
+}
+exports.actualizarPassword = async (req, res) => {
+    // console.log(req.params.token);
+    const usuario = await Usuarios.findOne(
+        {where: {
+                token: req.params.token,
+                expiracion: { [Op.gte] : Date.now() }
+                }
+        }
+    );
+    // Verificación de existencia del usuario
+        // console.log(usuario);
+        // Verificación negativa
+            if(!usuario){
+                req.flash('error', 'No válido');
+                res.redirect('/restablecer');
+            }
+        // Verificación positiva
+            // Hash new password
+            usuario.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10));
+            // Limpiar token y expiración
+            usuario.token = null;
+            usuario.expiracion = null;
+            // Guardar el nuevo password
+            await usuario.save();
+            // Notificación de éxito
+            req.flash('correcto', 'La clave de acceso se ha modificado satisfactoriamente.');
+            res.redirect('/iniciar-sesion');
 }
