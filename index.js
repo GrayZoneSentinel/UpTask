@@ -69,3 +69,8 @@ app.use((req, res, next) =>{
 app.use('/', routes());
 // Configurar puerto
 app.listen(3000);
+
+//============================
+//      EMAIL SERVICES
+//============================
+require('./handlers/email');
