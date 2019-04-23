@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+html(lang="es")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        meta(http-equiv="X-UA-Compatible", content="ie=edge")
+        style
+            include ./email.css
+    body
+        h2 Bienvenido a tu UpTask
+        p Estás a un solo paso de dar de alta tu cuenta, tan simple como acceder a ella a través del siguiente enlace:
+        a(href=`${confirmarURL}`) Alta cuenta UpTask
+        p  #{confirmarURL}
+        p Gracias por formar parte de UpTask
+        p Todo el equipo de UpTask te da la bienvenida,
+        h4 UpTask Staff

@@ -1,5 +1,6 @@
 const Usuarios = require('../models/Usuarios');
 // const flash = require('connect-flash');
+const enviarMail = require('../handlers/email');
 //================================================
 //         FUNCIONES DE USUARIOS
 //================================================
@@ -25,7 +26,22 @@ exports.crearCuenta = async (req, res) => {
             await Usuarios.create({
                 email,
                 password
-            });  
+            });
+            // Crear una URL de confirmación de creación de nueva cuenta de usuario
+            const confirmarURL = `http://${req.headers.host}/confirmar/${email}`;
+            // Creación de un nuevo objeto de usuario
+            const usuario = {
+                email
+            }
+            // Enviar el email al potencial usuario
+            await enviarMail.enviar({
+                usuario,
+                subject: 'Confirma tu cuenta UpTask',
+                confirmarURL,
+                archivo: 'confirmar-cuenta'
+            });
+            // Redirigir
+            req.flash('correcto', 'Recibirás un correo electrónico para confirmar la creación de tu UpTask.')
             res.redirect('/iniciar-sesion');
         } catch (error) {
             // console.log(error);
