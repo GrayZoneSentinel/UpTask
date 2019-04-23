@@ -33,7 +33,9 @@ const Usuarios = db.define('usuarios', {
                 msg: 'Password requerido'
             }
         }
-    }
+    },
+    token: Sequelize.STRING(80),
+    expiracion: Sequelize.DATE
 }, {
     hooks: {
         beforeCreate(usuario){

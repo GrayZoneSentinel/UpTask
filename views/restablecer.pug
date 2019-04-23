@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+html(lang="es")
+    head
+       include partials/header
+    body.login
+        .contenedor-formulario
+            h1= nombrePagina
+
+            if locals.mensajes  
+                .alertas
+                    each categoria in Object.keys(locals.mensajes)
+                        each error in mensajes[categoria]
+                            .alerta(class=`${categoria}`)
+                                p= error  
+
+            form#formulario.caja-login(method="POST" action="/restablecer")
+                .campo
+                    h3 Introduce el email vinculado a tu UpTask
+                .campo
+                    label(for="email") Email:
+                    input(type="email" name="email" placeholder="Introduce tu correo electrónico" value= email)
+                .campo.enviar 
+                    input.boton(type="submit" value="Enviar")
+                .campo.acciones
+                    a(href="/iniciar-sesion") Volver al panel de acceso
+
