@@ -55,6 +55,25 @@ exports.crearCuenta = async (req, res) => {
             })
         }
 }
+exports.confirmarCuenta = async (req, res) => {
+    // Cambia el estado de una cuenta
+    // res.json(req.params.correo);
+    const usuario = await Usuarios.findOne(
+        {
+            where : { email: req.params.correo}
+        }
+    );
+    // Usuario fallido
+    if(!usuario){
+        req.flash('error', 'No válido');
+        res.redirect('/crear-cuenta');
+    }
+    // Usuario creado correctamente
+    usuario.activo = 1;
+    await usuario.save();
+    req.flash('correcto', 'Cuenta funcional y activa');
+    res.redirect('/iniciar-sesion');
+}
 exports.formRestablecerPassword = (req, res) => {
     res.render('restablecer', {
         nombrePagina: 'Restablecer contraseña'
